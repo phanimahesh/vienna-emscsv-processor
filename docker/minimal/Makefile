@@ -68,6 +68,7 @@ root/app: | root
 root/app/stp.wien.gv.at.crt: | root/app
 	@cp stp.wien.gv.at.crt root/app/stp.wien.gv.at.crt
 root/bin/emscsv-processor: | root/bin
+	@stack build
 	@cp -L `stack exec which emscsv-processor` root/bin/
 	@strip root/bin/emscsv-processor
 
@@ -75,10 +76,12 @@ root/bin/sleep : | root/bin
 	@cp -L `which sleep` root/bin/
 
 docker: clean | env-integer-gmp root/bin/emscsv-processor root/app/stp.wien.gv.at.crt root/bin/sleep
-	@tar -cC root .|docker import - emscsv-processor:base
-	@docker build --no-cache . -t phanimahesh/emscsv-processor:minimal
+	@docker build . -t phanimahesh/emscsv-processor:minimal-dev
 
 clean:
 	@rm -rf root
 
-.PHONY: default docker clean
+test-run: docker
+	@docker run --rm -it -v "${PWD}/../..:/app" phanimahesh/emscsv-processor:minimal-dev
+
+.PHONY: default docker clean test-run

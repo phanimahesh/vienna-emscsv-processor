@@ -21,12 +21,33 @@ description:         Please see the README on GitHub at <https://github.com/phan
 
 dependencies:
 - base >= 4.7 && < 5
+- rio
+- envy
+- aeson
+- bytestring
+- cassava
+- connection
+- containers
+- unordered-containers
+- data-default
+- HandsomeSoup
+- HTTP
+- http-client
+- http-client-tls
+- hxt
+- lens
+- split
+- time
+- tls
+- vector
+- wreq
+- x509-store
 
 library:
   source-dirs: src
 
 executables:
-  emscsv-processor-exe:
+  emscsv-processor:
     main:                Main.hs
     source-dirs:         app
     ghc-options:

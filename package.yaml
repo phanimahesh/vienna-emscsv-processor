@@ -24,6 +24,8 @@ dependencies:
 - rio
 - envy
 - aeson
+- lens-aeson
+- text
 - bytestring
 - cassava
 - connection

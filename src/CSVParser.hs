@@ -6,6 +6,7 @@
 module CSVParser
   ( MeterReadingRecord(..)
   , decodeCSV
+  , DateTime(..)
   ) where
 
 import           Data.Aeson (ToJSON, toJSON)
@@ -26,7 +27,7 @@ data EmsCsvRecord = EmsCsvRecord { compLevel :: Int
                                  , msjoDatum :: DateTime
                                  , zeitId :: Int
                                  , messId :: Int
-                                 , msjoWert :: Float -- The only thing we need for now.
+                                 , msjoWert :: Double -- The only thing we need for now.
                                  , msjoInterval :: Int
                                  , msjoDgueltig :: Int
                                  , sterFlag :: Int
@@ -37,7 +38,7 @@ instance Csv.FromRecord EmsCsvRecord
 
 -- This contains fields we are actually interested in reading
 data MeterReadingRecord = MeterReadingRecord { msjoDatum :: DateTime
-                                             , msjoWert :: Float
+                                             , msjoWert :: Double
                                              } deriving (Show)
 
 -- Lets us parse MeterReadingRecords directly from CSV.
@@ -47,7 +48,7 @@ instance Csv.FromRecord MeterReadingRecord where
       fromEmscsvRecord EmsCsvRecord{..} = MeterReadingRecord {..}
   
 -- Newtype to handle special parsing and serialization for datetime
-newtype DateTime = DateTime LocalTime deriving Show
+newtype DateTime = DateTime LocalTime deriving (Show,Eq)
 
 instance Csv.FromField DateTime where
   parseField s = parseDateTime <$> Csv.parseField s

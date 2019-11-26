@@ -2,3 +2,5 @@
 emscsv-processor.cabal
 *~
 docker/minimal/root/
+*.key
+*.crt
